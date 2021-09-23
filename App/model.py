@@ -314,9 +314,18 @@ def ArtistNameByID (catalog, artistID):
             return name
 
         i+=1    
+
+def ArtistListByID (catalog, artistID):
+    
+    Artists = catalog["artists"]
+    size = lt.size(Artists)
+
+    for cont in range(1, size+1):
+        artists = lt.getElement(Artists, cont)
+        if artistID == artists["ConstituentID"]:
+            return artists
+    
         
-
-
 def freqMedium (Mediums, Artworkslist):
 
     MediumListReps=lt.newList('ARRAY_LIST')
@@ -382,7 +391,111 @@ def MUMList(MostUsedMedium, Artworkslist):
             lt.addLast(MUMList, Artwork)
             
 
-    return MUMList    
+    return MUMList  
+
+def TopNacionalidades(catalog):
+
+    ArtWorks = catalog["artworks"]
+    Nacionalidades = lt.newList()
+    TotalArtists = lt.newList()
+    Nacionalidadessin = lt.newList()
+    reps = lt.newList()
+
+    size = lt.size(ArtWorks)
+    
+   
+    for cont in range(1, size+1):
+        obra = lt.getElement(ArtWorks, cont)
+        
+        sinconrchete1 = obra["ConstituentID"].lstrip("[")
+        sinconrchete2 = sinconrchete1.rstrip("]")
+        artists = sinconrchete2.split(",")
+        size2 = len(artists)
+        for n in range(0,size2):
+            artistaid = artists[n]
+            artist = ArtistListByID(catalog, artistaid)
+            if artist is not None:
+                Nacionalidad = artist["Nationality"]
+                lt.addLast(Nacionalidades, Nacionalidad)
+                pos = lt.isPresent(Nacionalidadessin, Nacionalidad)
+                if pos == 0:
+                    lt.addLast(Nacionalidadessin, Nacionalidad)       
+    
+    size4 = lt.size(Nacionalidades)
+    size5 = lt.size(Nacionalidadessin)
+    print ("Nacionalidades sin: " +str(size5)) 
+
+    for x in range(1,size5+1):
+        nacionalidad = lt.getElement(Nacionalidadessin, x)
+        i = 0
+        for y in range(1,size4+1):
+            
+            nacionalidad2 = lt.getElement(Nacionalidades, y)
+            if nacionalidad == nacionalidad2:
+                i+=1
+        lt.addLast(reps, i)
+    size6 = lt.size(reps)
+    print ("Reps: "+str(size6))
+    lista = zipNAcionalidades(Nacionalidadessin, reps)
+
+    return lista
+
+    
+def MayorNacionalidad(catalog, top1):
+    Artworks = catalog["artworks"]
+    TotalArtworks = lt.newList()
+    size = lt.size(Artworks)
+    
+    for cont in range(1,size+1):
+        artwork = lt.getElement(Artworks, cont)
+        sinconrchete1 = artwork["ConstituentID"].lstrip("[")
+        sinconrchete2 = sinconrchete1.rstrip("]")
+        artists = sinconrchete2.split(",")
+        size2 = len(artists)
+        Esta = False
+        
+        for n in range(0, size2):
+            
+            artistaid = artists[n]
+            artist = ArtistListByID(catalog, artistaid)
+            if artist is not None:
+                Nacionalidad = artist["Nationality"]
+                
+                if Nacionalidad == top1:
+                    Esta = True
+                    
+        if Esta is True:
+            lt.addLast(TotalArtworks, artwork)
+        Esta = False
+
+    return (TotalArtworks)
+
+        
+    
+
+
+
+
+
+    
+def zipNAcionalidades (lt1, lt2):
+    zipped = lt.newList()
+    size = lt.size(lt1)
+
+    for i in range(1, size+1):
+        element1 = lt.getElement(lt1, i)
+        element2 = lt.getElement(lt2, i)
+
+        elementzip = {"Nationality": element1, "Cantidad": element2}
+
+        lt.addLast(zipped, elementzip)
+        
+    return zipped
+
+
+
+
+
 
 def ArtworksByDepto (catalog, Depto):
     
@@ -595,29 +708,6 @@ def zipper3 (lt1, lt2):
 def compareartistyears(year1, year2):
     return (int(year1['BeginDate']) < int(year2['BeginDate']))
 
-def compareartworkyears(date1, date2):
-    fecha1 = date1['DateAcquired'].split("-")
-    fecha2 = date2['DateAcquired'].split("-")
-    year1 =  fecha1[0]
-    year2 = fecha2[0]
-    return (int(year1['Date']) > int(year2['Date']))
-
-def compareartworkyearsmonthday(date1, date2):
-    return (str(date1['DateAcquired']) > str(date2['DateAcquired']))
-
-def compareartworkmonths(date1, date2):
-    fecha1 = date1['DateAcquired'].split("-")
-    fecha2 = date2['DateAcquired'].split("-")
-    year1 =  fecha1[1]
-    year2 = fecha2[1]
-    return (int(year1['Date']) > int(year2['Date']))
-
-def compareartworkdays(date1, date2):
-    fecha1 = date1['DateAcquired'].split("-")
-    fecha2 = date2['DateAcquired'].split("-")
-    year1 =  fecha1[2]
-    year2 = fecha2[2]
-    return (int(year1['Date']) > int(year2['Date']))
 
 def compareartworkyearsinv(year1, year2):
     return (int(year1['Date']) < int(year2['Date']))
@@ -629,6 +719,9 @@ def comparemediumsfreq (freq1, freq2):
     return (int(freq1["Freq"]) > int(freq2["Freq"]))
 
 
+    
+def comparenacionalidades(reps1, reps2):
+    return (int(reps1["Cantidad"]) > int(reps2["Cantidad"]))
 # Funciones de ordenamiento
 
 def sortArtist(artists):
@@ -638,7 +731,6 @@ def sortArtist(artists):
 
 def sortArtworksByDate (artworks):
     result = sa.sort(artworks, compareartworkyearsinv)
-
     return(result)
     
 
@@ -650,17 +742,9 @@ def sortArtworks(Artworks):
 
 def sortArtworksByPrice(zippedIDandPrice):
     result = sa.sort(zippedIDandPrice, compareartworkprices)
-    
     return result
     
-def sortArtworksYear(artworks):
-    sa.sort(artworks, compareartworkyears)
 
-def sortArtworksMonth(artworks):
-    sa.sort(artworks, compareartworkmonths)
-
-def sortArtworksDay(artworks):
-    sa.sort(artworks, compareartworkdays)
 
 def MostUsedMedium(freq, Mediums):
 
@@ -670,3 +754,6 @@ def MostUsedMedium(freq, Mediums):
 
     return sorted
 
+def SortNacionalidades(nacionalidades):
+    result = sa.sort(nacionalidades, comparenacionalidades)
+    return result 
