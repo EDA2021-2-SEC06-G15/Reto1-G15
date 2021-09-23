@@ -29,6 +29,8 @@ import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
+import datetime
+from datetime import datetime
 
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
@@ -602,6 +604,18 @@ def compareartworkyears(date1, date2):
     year2 = fecha2[0]
     return (int(year1['Date']) > int(year2['Date']))
 
+def compareartworkyearsmonthday(date1, date2):
+    fecha1 = date1['DateAcquired']
+    fecha2 = date2['DateAcquired']
+    datetime_obj1 = datetime.strptime(fecha1, 
+                                 "%Y-%b-%d")
+    datetime_obj2 = datetime.strptime(fecha2, 
+                                 "%Y-%b-%d")
+    gooddate1 = datetime_obj1.date()
+    gooddate2 = datetime_obj2.date()
+
+    return ((gooddate1) > (gooddate2))
+
 def compareartworkmonths(date1, date2):
     fecha1 = date1['DateAcquired'].split("-")
     fecha2 = date2['DateAcquired'].split("-")
@@ -639,8 +653,8 @@ def sortArtworksByDate (artworks):
     return(result)
     
 
-def sortArtworks(catalog):
-    sa.sort(catalog['artworks'], compareartworkyears)
+def sortArtworks(Artworks):
+    sa.sort(Artworks, compareartworkyearsmonthday)
 
 
 def sortArtworksByPrice(zippedIDandPrice):

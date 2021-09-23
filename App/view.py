@@ -265,6 +265,8 @@ while True:
         autores = controller.CountArtists(obras)
         print ("Con "+str(lt.size(autores))+" diferentes artistas y "+ str(lt.size(compradas))+" de ellas fueron compradas.")
         "sorted = controller.sortArtworks(obras)"
+        ordenada = controller.sortArtworks(obras)
+        print(ordenada)
         
 
 
