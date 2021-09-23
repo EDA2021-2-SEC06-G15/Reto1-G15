@@ -28,6 +28,7 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
+import time
 
 default_limit = 1000
 sys.setrecursionlimit(default_limit*10)
@@ -281,22 +282,34 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         start_time = time.process_time()
+
         print("Cargando información de los archivos ....")
         catalog = initCatalog()
         loadData(catalog)
         print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
         print('Obras cargadas: ' + str(lt.size(catalog['artworks'])))
-        PrintCatalog(catalog)      
+        PrintCatalog(catalog)
+
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000 
+        print("Tiempo de ejecución: "+str(elapsed_time_mseg))
 
         
     elif int(inputs[0]) == 2:
+        start_time = time.process_time()
         year1 = input("Ingrese el año inicial: ")
         year2 = input("Ingrese el año final: ")
         artists = controller.getArtistsbyYear(catalog, int(year1), int(year2))
         print('Hay ' + str(lt.size(artists))+ ' artistas entre ' + str(year1) +' y '+str(year2))
         printArtistbyYear(artists)
 
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000 
+        print("Tiempo de ejecución: "+str(elapsed_time_mseg))
+
     elif int(inputs[0]) == 3:
+        start_time = time.process_time()
+
         date1 = input("Ingrese la fecha inicial (AAAA-MM-DD): ")
         date2 = input("Ingrese la fecha final (AAAA-MM-DD): ")
         obras = controller.getArtworksbyDate(catalog, date1, date2)
@@ -306,10 +319,15 @@ while True:
         print ("Con "+str(lt.size(autores))+" diferentes artistas y "+ str(lt.size(compradas))+" de ellas fueron compradas.")
         sorted = controller.sortArtworks(obras)
         PrintObrasTop(sorted)
+
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000 
+        print("Tiempo de ejecución: "+str(elapsed_time_mseg))
               
 
     elif int(inputs[0]) == 4:
-        
+        start_time = time.process_time()
+
         ArtistName = input("Ingrese el nombre del artista: ")
         Artworkslist = controller.ArtworksByArtist(catalog, ArtistName)
         totaldeobras = lt.size(Artworkslist)
@@ -332,8 +350,13 @@ while True:
         printMUMList(catalog, List)
         print(" ")
 
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000 
+        print("Tiempo de ejecución: "+str(elapsed_time_mseg))
+
      
     elif int(inputs[0]) == 5:
+        start_time = time.process_time()
 
         Nacionalidades = controller.TopNacionalidades(catalog)
         SortNacionalidad = controller.SortNacionalidades(Nacionalidades)
@@ -344,9 +367,15 @@ while True:
         ObrasMayorNacionalidad = controller.MayorNacionalidad(catalog, Top1)
         print(lt.size(ObrasMayorNacionalidad))
         PrintObrasTop(ObrasMayorNacionalidad)
+
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000 
+        print("Tiempo de ejecución: "+str(elapsed_time_mseg))
   
     
     elif int(inputs[0]) == 6:
+        start_time = time.process_time()
+
         dpto = input("Ingrese el departamento que desea consultar: ")
         artworksByDepto = controller.ArtworksByDepto (catalog, dpto)
         numeroDeObras = lt.size(artworksByDepto)
@@ -375,6 +404,10 @@ while True:
         obrasporcosto = controller.obrasporcosto(artworksByDepto, zippedIDandPrice2)
         print5MostExpArtworks(catalog, obrasporcosto, artworksByDepto)
         print(" ")
+
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000 
+        print("Tiempo de ejecución: "+str(elapsed_time_mseg))
 
     
 
