@@ -262,11 +262,10 @@ while True:
         obras = controller.getArtworksbyDate(catalog, date1, date2)
         print ("Hay un total de "+str(lt.size(obras))+" obras entre "+str(date1)+" y "+str(date2)+".")
         compradas = controller.PurchaseArtworks(obras)
-        print (lt.size(compradas))
         autores = controller.CountArtists(obras)
-        print(lt.size(autores))
         print ("Con "+str(lt.size(autores))+" diferentes artistas y "+ str(lt.size(compradas))+" de ellas fueron compradas.")
-        sorted = controller.sortArtworks(obras)
+        "sorted = controller.sortArtworks(obras)"
+        
 
 
     elif int(inputs[0]) == 4:
