@@ -82,13 +82,13 @@ def printArtistbyYear(artists):
         
          
 
-def printartistandfreq(Mediums, freq):
+def printartistandfreq(MostUsedMedium):
     i = 1
-    size = lt.size(Mediums)
 
-    while i <= size:
-        tecnica = lt.getElement(Mediums, i)
-        frecuencia = lt.getElement(freq, i)
+    while i <= 5:
+        element =  lt.getElement(MostUsedMedium, i)
+        tecnica = element["Medium"]
+        frecuencia = element["Freq"]
 
         i+=1
 
@@ -97,9 +97,9 @@ def printartistandfreq(Mediums, freq):
 
 def printMUMList(catalog, MUMList):
     i = 1
-    size = lt.size(MUMList)
-
-    while i <= size:
+    
+    while i <= 3:
+        print(i)
         artwork = lt.getElement(MUMList, i)
 
         print('Titulo: ' + artwork['Title'])
@@ -279,15 +279,16 @@ while True:
         Mediums = controller.MediumInArtwork(Artworkslist)
         freq = controller.FreqMediums(Mediums, Artworkslist)
         print("// ")
-        print(str(ArtistName)+" tiene un total de "+str(lt.size(Mediums))+" técnicas usadas:")
-        MostUsedMedium = controller.MostUsedMedium(freq, Mediums)     
+        print(str(ArtistName)+" tiene un total de "+str(lt.size(Mediums))+" técnicas usadas.")
+        MostUsedMedium = controller.MostUsedMedium(freq, Mediums)    
         print(" ")
-        printartistandfreq(Mediums, freq)
+        print("Las 5 técnicas más usadas son:")
+        printartistandfreq(MostUsedMedium)
         print("// ")
-        print("La técnica más usada por "+str(ArtistName)+" es: "+str(MostUsedMedium)+".")
+        print("La técnica más usada por "+str(ArtistName)+" es: "+str(lt.getElement(MostUsedMedium, 1)["Medium"])+".")
         print(" ")
         List = controller.MUMList(MostUsedMedium, Artworkslist)
-        print("Las obras en las que se usó dicha técnica son: ")
+        print("Un ejemplo de 3 obras en las que se usó dicha técnica son: ")
         print(" ")
         printMUMList(catalog, List)
         print(" ")

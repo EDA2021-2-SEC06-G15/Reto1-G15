@@ -368,23 +368,6 @@ def MediumInArtworks (artworksByID):
     return (mediums)
 
 
-def MostUsedMedium(freq, Mediums):
-
-    max = 0
-    size=lt.size(freq)
-
-    for i in range(1, 1+size):
-        f = lt.getElement(freq, i)
-
-        if f > max:
-            max = f
-        
-    pos = lt.isPresent(freq, max)
-
-    MostUsedMedium = lt.getElement(Mediums, pos)
-
-    return MostUsedMedium
-
 
 def MUMList(MostUsedMedium, Artworkslist):
 
@@ -395,7 +378,7 @@ def MUMList(MostUsedMedium, Artworkslist):
         Artwork = lt.getElement(Artworkslist, i)
         Medium = Artwork["Medium"]
 
-        if Medium == MostUsedMedium:
+        if Medium == lt.getElement(MostUsedMedium, 1)["Medium"]:
             lt.addLast(MUMList, Artwork)
             
 
@@ -451,7 +434,7 @@ def tamanoObras (artworksByDepto):
                 ancho = float(ancho)/100
                 dimensiones = profundidad*ancho*altura
 
-            elif largo != "" and ancho != "":
+            elif profundidad != "" and ancho != "":
                 largo = float(largo)/100
                 ancho = float(ancho)/100
                 dimensiones = profundidad*ancho*altura
@@ -462,7 +445,7 @@ def tamanoObras (artworksByDepto):
 
             elif largo != "":
                 largo = float(largo)/100
-                dimensiones = profundidad*altura
+                dimensiones = largo*altura
             
             elif ancho != "":
                 ancho = float(ancho)/100
@@ -472,7 +455,7 @@ def tamanoObras (artworksByDepto):
         elif largo != "" and ancho != "":
             largo = float(largo)/100
             ancho = float(ancho)/100
-            dimensiones = profundidad*ancho 
+            dimensiones = largo*ancho 
 
         elif circunferencia != "":
             circunferencia = float(circunferencia)/100
@@ -590,6 +573,20 @@ def zipper2 (lt1, lt2):
         
     return zipped
 
+def zipper3 (lt1, lt2):
+    zipped = lt.newList()
+    size = lt.size(lt1)
+
+    for i in range(1, size+1):
+        element1 = lt.getElement(lt1, i)
+        element2 = lt.getElement(lt2, i)
+
+        elementzip = {"Medium": element1, "Freq": element2}
+
+        lt.addLast(zipped, elementzip)
+        
+    return zipped
+
 
 
 
@@ -625,7 +622,9 @@ def compareartworkyearsinv(year1, year2):
 def compareartworkprices(price1, price2):
     return (float(price1["Price"]) > float(price2["Price"]))
 
-    
+def comparemediumsfreq (freq1, freq2):
+    return (int(freq1["Freq"]) > int(freq2["Freq"]))
+
 
 # Funciones de ordenamiento
 
@@ -658,3 +657,12 @@ def sortArtworksMonth(artworks):
 
 def sortArtworksDay(artworks):
     sa.sort(artworks, compareartworkdays)
+
+def MostUsedMedium(freq, Mediums):
+
+    zipped = zipper3(Mediums, freq)
+
+    sorted = sa.sort(zipped, comparemediumsfreq)
+
+    return sorted
+
