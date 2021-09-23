@@ -27,7 +27,7 @@
 
 import config as cf
 from DISClib.ADT import list as lt
-from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import quicksort as sa
 assert cf
 
 """
@@ -49,7 +49,7 @@ def newCatalog():
     catalog['artists'] = lt.newList('ARRAY_LIST',
                                     cmpfunction=compareartistyears)
     catalog['artworks'] = lt.newList('ARRAY_LIST',
-                                    cmpfunction=compareartworkyears)
+                                    cmpfunction=compareartworkyearsmonthday)
     
     return catalog
 
@@ -283,7 +283,7 @@ def ArtworksByID (catalog, artistID):
 def ArtworksByIDItself (artworksByDepto, artworkID):
     
     artworks = artworksByDepto
-    artworksByID = lt.newList("ARRAY_LIST")
+    artworksByID = lt.newList("")
     i=1
     
     while i <= lt.size(artworks):
@@ -328,7 +328,7 @@ def ArtistListByID (catalog, artistID):
         
 def freqMedium (Mediums, Artworkslist):
 
-    MediumListReps=lt.newList('ARRAY_LIST')
+    MediumListReps=lt.newList()
     size=lt.size(Artworkslist)
 
     for n in range(1,size+1):
@@ -339,7 +339,7 @@ def freqMedium (Mediums, Artworkslist):
 
         lt.addLast(MediumListReps, Medium)
 
-    freq = lt.newList('ARRAY_LIST')
+    freq = lt.newList()
     
     size2 = lt.size(Mediums)
     size3 = lt.size(MediumListReps)
@@ -361,7 +361,7 @@ def freqMedium (Mediums, Artworkslist):
 
 def MediumInArtworks (artworksByID):
     
-    mediums = lt.newList('ARRAY_LIST')
+    mediums = lt.newList()
     i=0
     
     while i <= lt.size(artworksByID):
@@ -500,7 +500,7 @@ def zipNAcionalidades (lt1, lt2):
 def ArtworksByDepto (catalog, Depto):
     
     artworks = catalog["artworks"]
-    artworksByDepto = lt.newList('ARRAY_LIST')
+    artworksByDepto = lt.newList()
     i=1
     
     while i <= lt.size(artworks):
@@ -718,7 +718,8 @@ def compareartworkprices(price1, price2):
 def comparemediumsfreq (freq1, freq2):
     return (int(freq1["Freq"]) > int(freq2["Freq"]))
 
-
+def compareartworkyearsmonthday(date1, date2):
+    return (str(date1["DateAcquired"]) > date2["DateAcquired"])
     
 def comparenacionalidades(reps1, reps2):
     return (int(reps1["Cantidad"]) > int(reps2["Cantidad"]))

@@ -29,6 +29,9 @@ import controller
 from DISClib.ADT import list as lt
 assert cf
 
+default_limit = 1000
+sys.setrecursionlimit(default_limit*10)
+
 
 """
 La vista se encarga de la interacción con el usuario
@@ -55,7 +58,6 @@ def printMenu():
     print("4- Clasificar las obras de un artista por técnica")
     print("5- Clasificar las obras por la nacionalidad de sus creadores")
     print("6- Transportar obras de un departamento ")
-    print("7- Proponer una nueva exposición en el museo ")
     print("0- Salir")
 
 
@@ -176,7 +178,7 @@ def print5MostArtworks (catalog, obras, zippedIDandPrice):
         i+=1
 
 
-def print5MostExpArtworks (catalog, obrasporcosto, zippedIDandPrice, artworksByDepto):  
+def print5MostExpArtworks (catalog, obrasporcosto, artworksByDepto):  
     i=1
 
     while i <= 5:
@@ -278,6 +280,7 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        start_time = time.process_time()
         print("Cargando información de los archivos ....")
         catalog = initCatalog()
         loadData(catalog)
@@ -301,6 +304,8 @@ while True:
         compradas = controller.PurchaseArtworks(obras)
         autores = controller.CountArtists(obras)
         print ("Con "+str(lt.size(autores))+" diferentes artistas y "+ str(lt.size(compradas))+" de ellas fueron compradas.")
+        sorted = controller.sortArtworks(obras)
+        PrintObrasTop(sorted)
               
 
     elif int(inputs[0]) == 4:
@@ -368,7 +373,7 @@ while True:
         print("// ")
         print("Las 5 obras más costosas de transportar son: ")
         obrasporcosto = controller.obrasporcosto(artworksByDepto, zippedIDandPrice2)
-        print5MostExpArtworks(catalog, obrasporcosto, zippedIDandPrice, artworksByDepto)
+        print5MostExpArtworks(catalog, obrasporcosto, artworksByDepto)
         print(" ")
 
     

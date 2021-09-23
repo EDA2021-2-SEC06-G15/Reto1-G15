@@ -74,6 +74,11 @@ def sortArtists(Artists):
     
     Sorted = model.sortArtist(Artists)
     return (Sorted)
+
+def sortArtworks(artworks):
+    
+    Sorted = model.sortArtworks(artworks)
+    return (Sorted)
   
 
         
