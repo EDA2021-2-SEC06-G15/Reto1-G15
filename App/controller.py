@@ -76,90 +76,13 @@ def sortArtists(Artists):
     
     Sorted = model.sortArtist(Artists)
     return (Sorted)
+  
 
-def sortArtworks(Artworks):
-    sorted = model.sortArtworks(Artworks)
-    return sorted
-   
-
-"""
-def sortArtworks(ArtWorks):
-    
-   SortedYear = model.sortArtworksYear(ArtWorks)
-   size = lt.size(SortedYear)
-   Years = lt.newList()
-   SortedMonth = lt.newList()
-   
-   SortedDay = lt.newList()
-   
-   for cont in range(1,size+1):
-
-       obra = lt.getElement(SortedYear, cont)
-       date = obra['DateAcquired']
-       date2 = date.split("-")
-       year = int(date2[0])
-       pos = lt.isPresent(Years, year)
-
-       if pos == 0:
-           lt.addLast(Years, year)  
-
-    size2 = lt.size(Years)
-    
-    for n in range(1,size2+1):
-        yearc = lt.getElement(Years,n)
-        temp = lt.newList()
-        for cont in range(1,size+1):
-            obra = lt.getElement(SortedYear, cont)
-            date = obra['DateAcquired']
-            date2 = date.split("-")
-            year = date2[0]
-            if yearc == year:
-                lt.addLast(temp,obra)
-        sorted = model.sortArtworksMonth(temp)
-        size3 = lt.size(sorted)
-        for a in range(1,size3+1):
-            obra = lt.getElement(sorted, a)
-            lt.addLast(SortedMonth, obra)
-    
-    
-    for n in range(1,size2+1):
-        temp = lt.newList()
-        yearc = lt.getElement(Years,n)
-        for cont in range(1,size+1):
-            obra = lt.getElement(SortedMonth, cont)
-            date = obra['DateAcquired']
-            date2 = date.split("-")
-            year = date2[0]
-            if yearc == year:
-                lt.addLast(temp,obra)
-        size3 = lt.size(temp)
-        for mes in range(1,12):
-            temp2 = lt.newList()
-            obra = lt.getElement(SortedMonth, cont)
-            date = obra['DateAcquired']
-            date2 = date.split("-")
-            month = date2[1]
-            if mes == month:
-                lt.addLast(temp2, obra)
-            sorted = model.sortArtworksDay(temp2)
-            size4 = lt.size(sorted)
-            for n in range(1,size+1):
-                element = lt.getElement(sorted,n)
-                lt.addLast(SortedDay, element)
-
-    return (SortedDay)
-
-"""
         
-                
-    
+def SortNacionalidades(nacionalidades):
+    Sorted = model.SortNacionalidades(nacionalidades)
+    return (Sorted)
 
-
-            
-
-
-    
-   
 
      
 # Funciones de consulta sobre el catálogo
@@ -231,6 +154,14 @@ def MUMList(MostUsedMedium, Artworkslist):
 
     return MUMList
 
+def TopNacionalidades(catalog):
+    Top = model.TopNacionalidades(catalog)
+
+    return Top
+
+def MayorNacionalidad(catalog, top1):
+    Obras = model.MayorNacionalidad(catalog, top1)
+    return Obras
 
 def ArtworksByDepto (catalog, Depto):
     artworks = model.ArtworksByDepto (catalog, Depto)

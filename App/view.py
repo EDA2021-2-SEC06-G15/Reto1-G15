@@ -20,6 +20,9 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+
+
+
 import config as cf
 import sys
 import controller
@@ -221,7 +224,51 @@ def print5MostExpArtworks (catalog, obrasporcosto, zippedIDandPrice, artworksByD
 
         i+=1
 
+def printTop10(nacionalidades):
+    size = lt.size(nacionalidades)
+    
+    print(' Top 10 de Nacionalidades con mayor cantidad de obra: ')
+    i=1
+    while i<=10:
+        nacionalidad=lt.getElement(nacionalidades,i)
+        print('Nacionalidad: ' + nacionalidad['Nationality'] + '  Cantidad de obras: ' + str(nacionalidad['Cantidad']))
+        i+=1
 
+def PrintObrasTop(Obras):
+    size = lt.size(Obras)
+    print(' Estos son los 3 primeros: ')
+    i=1
+    while i<=3:
+        obra=lt.getElement(Obras,i)
+        print('Titulo: ' + obra['Title'] + '  ID de el/los Artista/s: ' + obra['ConstituentID'] + '  Fecha de Fabricaci+on: ' + obra['Date']+ 
+                ' Medio: ' + obra['Medium']  + '  Dimensiones: ' +  obra['Dimensions'])
+        i+=1
+    print (' Estos son los 3 últimos: ')
+    j=size
+    a=1
+    while a<=3:
+        obra=lt.getElement(Obras,i)
+        print('Titulo: ' + obra['Title'] + '  ID de los Artistas: ' + obra['ConstituentID'] + '  Fecha de Fabricacion: ' + obra['Date']+ 
+                ' Medio: ' + obra['Medium']  + '  Dimensiones: ' +  obra['Dimensions'])
+        j-=1
+        a+=1
+    
+    
+        
+def PrintCatalog(catalog):
+    i=1
+    while i<=3:
+        artist=lt.getElement(catalog['artists'],i)
+        print('Nombre: ' + artist['DisplayName'] + '  Año de nacimiento: ' + artist['BeginDate'] + 
+                '  Año de fallecimiento: ' + artist['EndDate']+ ' Nacionalidad: ' + artist['Nationality']  + '  Genero: ' +
+                  artist['Gender'])
+        i+=1
+    j=1
+    while j<=3:
+        obra=lt.getElement(catalog['artworks'],j)
+        print('Titulo: ' + obra['Title'] + '  ID de los Artistas: ' + obra['ConstituentID'] + '  Fecha de Fabricacion: ' + obra['Date']+ 
+                ' Medio: ' + obra['Medium']  + '  Dimensiones: ' +  obra['Dimensions'])
+        j+=1
 
 """
 Menu principal
@@ -236,17 +283,7 @@ while True:
         loadData(catalog)
         print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
         print('Obras cargadas: ' + str(lt.size(catalog['artworks'])))
-        
-        i=1
-        while i<=3:
-            artista=lt.getElement(catalog['artists'],i)
-            print(artista)
-            i+=1
-        j=1
-        while j<=3:
-            obra=lt.getElement(catalog['artworks'],j)
-            print(obra)
-            j+=1
+        PrintCatalog(catalog)      
 
         
     elif int(inputs[0]) == 2:
@@ -264,11 +301,7 @@ while True:
         compradas = controller.PurchaseArtworks(obras)
         autores = controller.CountArtists(obras)
         print ("Con "+str(lt.size(autores))+" diferentes artistas y "+ str(lt.size(compradas))+" de ellas fueron compradas.")
-        "sorted = controller.sortArtworks(obras)"
-        ordenada = controller.sortArtworks(obras)
-        print(ordenada)
-        
-
+              
 
     elif int(inputs[0]) == 4:
         
@@ -294,6 +327,20 @@ while True:
         printMUMList(catalog, List)
         print(" ")
 
+     
+    elif int(inputs[0]) == 5:
+
+        Nacionalidades = controller.TopNacionalidades(catalog)
+        SortNacionalidad = controller.SortNacionalidades(Nacionalidades)
+        print(lt.size(Nacionalidades))
+        Top = lt.getElement(SortNacionalidad, 1)
+        Top1 = Top["Nationality"]
+        printTop10(SortNacionalidad)
+        ObrasMayorNacionalidad = controller.MayorNacionalidad(catalog, Top1)
+        print(lt.size(ObrasMayorNacionalidad))
+        PrintObrasTop(ObrasMayorNacionalidad)
+  
+    
     elif int(inputs[0]) == 6:
         dpto = input("Ingrese el departamento que desea consultar: ")
         artworksByDepto = controller.ArtworksByDepto (catalog, dpto)
@@ -323,11 +370,6 @@ while True:
         obrasporcosto = controller.obrasporcosto(artworksByDepto, zippedIDandPrice2)
         print5MostExpArtworks(catalog, obrasporcosto, zippedIDandPrice, artworksByDepto)
         print(" ")
-
-    
-
-
-
 
     
 
